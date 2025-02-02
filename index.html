@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Be My Valentine? 💖</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-pink: #ff69b4;
+        --light-pink: #ffb6c1;
+        --white: #ffffff;
+        --shadow: rgba(255, 105, 180, 0.3);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--white);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        background-image: url("https://www.editablegifs.com/gifs/gifs/valentines-32/thumbnail.gif");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      .initial-message-container,
+      .second-message-container {
+        text-align: center;
+        z-index: 1;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 0 20px var(--shadow);
+        backdrop-filter: blur(5px);
+        position: relative;
+      }
+
+      .initial-message,
+      .second-message {
+        color: var(--primary-pink);
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .next-btn {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        background-color: var(--primary-pink);
+        color: var(--white);
+        transition: transform 0.3s;
+      }
+
+      .next-btn:hover {
+        transform: scale(1.1);
+      }
+
+      .container {
+        text-align: center;
+        z-index: 1;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 0 20px var(--shadow);
+        backdrop-filter: blur(5px);
+        position: relative;
+      }
+
+      .main-question {
+        color: var(--primary-pink);
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+      }
+
+      button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+
+      .yes-btn {
+        background-color: var(--primary-pink);
+        color: var(--white);
+      }
+
+      .yes-btn:hover {
+        transform: scale(1.1);
+      }
+
+      .no-btn {
+        background-color: var(--light-pink);
+        color: var(--white);
+        position: relative;
+      }
+
+      .cat-gif {
+        width: 200px;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+      }
+
+      .heart-beat {
+        width: 30px;
+        height: 30px;
+        background: var(--primary-pink);
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        animation: heartBeat 1.5s infinite;
+      }
+
+      .heart-beat::before,
+      .heart-beat::after {
+        content: "";
+        width: 30px;
+        height: 30px;
+        background: var(--primary-pink);
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .heart-beat::before {
+        left: -15px;
+        top: 0;
+      }
+
+      .heart-beat::after {
+        top: -15px;
+        left: 0;
+      }
+
+      @keyframes heartBeat {
+        0% {
+          transform: translateX(-50%) rotate(45deg) scale(1);
+        }
+        14% {
+          transform: translateX(-50%) rotate(45deg) scale(1.3);
+        }
+        28% {
+          transform: translateX(-50%) rotate(45deg) scale(1);
+        }
+        42% {
+          transform: translateX(-50%) rotate(45deg) scale(1.3);
+        }
+        70% {
+          transform: translateX(-50%) rotate(45deg) scale(1);
+        }
+      }
+
+      .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .popup-content {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        position: relative;
+        animation: popIn 0.5s ease-out;
+      }
+
+      .popup-gif {
+        width: 200px;
+        margin: 1rem 0;
+        border-radius: 10px;
+      }
+
+      .close-btn {
+        background-color: var(--light-pink);
+        color: var(--white);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+
+      .celebration-gif {
+        width: 200px;
+        margin: 1rem 0;
+        border-radius: 10px;
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0.3);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .hearts-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.6) 0%,
+          rgba(255, 182, 193, 0.4) 100%
+        );
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .floating-hearts,
+      .floating-bubbles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .floating-hearts::before,
+      .floating-hearts::after,
+      .floating-bubbles::before,
+      .floating-bubbles::after {
+        content: "❤️";
+        position: absolute;
+        animation: float 6s linear infinite;
+        opacity: 0;
+        font-size: 1.5rem;
+      }
+
+      .floating-bubbles::before,
+      .floating-bubbles::after {
+        content: "🫧";
+      }
+
+      @keyframes float {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) translateX(0) scale(0.2);
+        }
+        20% {
+          opacity: 0.8;
+        }
+        80% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-20vh) translateX(20vw) scale(1);
+        }
+      }
+
+      /* Generate multiple floating elements with different delays and positions */
+      .floating-hearts::before {
+        animation-delay: 0s;
+        left: 10%;
+      }
+      .floating-hearts::after {
+        animation-delay: 2s;
+        left: 30%;
+      }
+      .floating-bubbles::before {
+        animation-delay: 1s;
+        left: 50%;
+      }
+      .floating-bubbles::after {
+        animation-delay: 3s;
+        left: 70%;
+      }
+
+      /* Add more floating elements using pseudo-elements on child spans */
+      .floating-hearts::before {
+        content: "💖";
+      }
+      .floating-hearts::after {
+        content: "💝";
+      }
+      .floating-bubbles::before {
+        content: "💕";
+      }
+      .floating-bubbles::after {
+        content: "💗";
+      }
+
+      @media (max-width: 768px) {
+        .main-question {
+          font-size: 1.8rem;
+        }
+
+        .buttons {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .popup-content {
+          margin: 1rem;
+          max-width: calc(100% - 2rem);
+        }
+
+        .cat-gif,
+        .popup-gif,
+        .celebration-gif {
+          width: 150px;
+        }
+
+        .floating-hearts::before,
+        .floating-hearts::after,
+        .floating-bubbles::before,
+        .floating-bubbles::after {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fullbody">
+      <div class="hearts-bg"></div>
+      <div class="background-animation">
+        <div class="floating-hearts"></div>
+        <div class="floating-bubbles"></div>
+      </div>
+
+      <!-- Initial Message Section -->
+      <div class="initial-message-container">
+        <h1 class="initial-message">I have a serious question to ask</h1>
+        <button class="next-btn">Next</button>
+      </div>
+
+      <!-- Second Message Section -->
+      <div class="second-message-container hidden">
+        <h1 class="second-message">Please answer it correctly by your heart</h1>
+        <button class="next-btn">Next</button>
+      </div>
+
+      <!-- Main Content -->
+      <div class="container hidden">
+        <div class="heart-beat"></div>
+        <img
+          src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+          alt="Cute Cat"
+          class="cat-gif"
+        />
+        <h1 class="main-question">Will you be my Valentine? 💖</h1>
+
+        <div class="buttons">
+          <button class="yes-btn">YES 🥰</button>
+          <button class="no-btn">NO 😢</button>
+        </div>
+      </div>
+
+      <div class="celebration hidden">
+        <h2>Yay! I'm the luckiest! 🎉</h2>
+        <p>Can't wait for our Valentine's Day! ❤️🐱</p>
+        <img
+          src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif"
+          alt="Happy Cat"
+          class="celebration-gif"
+        />
+        <div class="confetti"></div>
+        <button class="close-btn">Close ✨</button>
+      </div>
+
+      <div class="popup hidden">
+        <div class="popup-content">
+          <img
+            src="https://media.giphy.com/media/3o7aD2sa1g0g0g0g0g/giphy.gif"
+            alt="Sad Cat"
+            class="popup-gif"
+          />
+          <p class="popup-text"></p>
+          <button class="close-btn">Close ✨</button>
+        </div>
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const noBtn = document.querySelector(".no-btn");
+          const fullBody = document.querySelector(".fullbody");
+          const yesBtn = document.querySelector(".yes-btn");
+          const container = document.querySelector(".container");
+          const popup = document.querySelector(".popup");
+          const popupText = document.querySelector(".popup-text");
+          const popupGif = document.querySelector(".popup-gif");
+          const closeButtons = document.querySelectorAll(".close-btn");
+          const initialMessageContainer = document.querySelector(
+            ".initial-message-container"
+          );
+          const secondMessageContainer = document.querySelector(
+            ".second-message-container"
+          );
+          const nextButtons = document.querySelectorAll(".next-btn");
+
+          // Cute cat GIFs array for YES response
+          const happyCatGifs = [
+            "https://i.pinimg.com/originals/cb/d1/e8/cbd1e8cae5a229ee6b03c931e248c94f.gif",
+            "https://i.pinimg.com/originals/2e/9e/33/2e9e3306a7f8733adec6530264e0223d.gif",
+            "https://media1.giphy.com/media/KztT2c4u8mYYUiMKdJ/200w.gif?cid=6c09b952t4xc819ib87wnvnn61294splhlfbpvp6fharw074&ep=v1_gifs_search&rid=200w.gif&ct=g",
+            "https://media.tenor.com/3-6_SqcDzzgAAAAM/love.gif",
+            "https://media1.giphy.com/media/qFmdpUKAFZ6rMobzzu/200w.gif?cid=6c09b952bym1taav4nkxokdaqb6rb1geqtapemyauy7f3z8l&ep=v1_gifs_search&rid=200w.gif&ct=g",
+          ];
+
+          // Cute messages for YES response
+          const happyMessages = [
+            "Yay! You're the best! 💖",
+            "You just made my day! Can't wait for our Valentine's date! 🥰",
+            "This is the happiest moment ever! Thank you for saying YES! 🎉",
+            "We're going to have so much fun together! Love you! ❤️",
+            "Woohoo! Best Valentine ever! 🥳",
+          ];
+
+          // Cute messages for NO response
+          const cuteMessages = [
+            "Please say yes! My heart is purr-fect for you! 🥺",
+            "I promise to make you smile every day! You're my furr-ever love! 😊",
+            "You're the cat's meow and I'm feline good about us! 🐱",
+            "We'd be purr-fect together! Don't break my heart! 😸",
+            "Meow you're trying to break my heart? Please say yes! 🙏",
+          ];
+
+          // Emotional cat GIFs for NO response
+          const emotionalCatGifs = [
+            "https://media.tenor.com/pBkoepSjv44AAAAj/bubu-bubu-dudu.gif",
+            "https://i.gifer.com/origin/62/62166a5d746443af6bfd213656a12ebc_w200.gif",
+            "https://media.tenor.com/mxFUB2neXSQAAAAj/rabbits.gif",
+            "https://media.self.com/photos/57d8b7d446d0cb351c8c5e73/master/w_1600%2Cc_limit/pikachu-crying.gif",
+            "https://gifdb.com/images/thumbnail/cute-crying-baby-0xzo9rwr6hfxmb4a.gif",
+          ];
+          // Function to show the initial messages
+          let currentStep = 0;
+
+          nextButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              if (currentStep === 0) {
+                initialMessageContainer.classList.add("hidden");
+                secondMessageContainer.classList.remove("hidden");
+                currentStep++;
+              } else if (currentStep === 1) {
+                secondMessageContainer.classList.add("hidden");
+                container.classList.remove("hidden");
+                currentStep++;
+              }
+            });
+          });
+
+          // Function to show popup with random message and GIF
+          function showPopup(isYes) {
+            const messages = isYes ? happyMessages : cuteMessages;
+            const gifs = isYes ? happyCatGifs : emotionalCatGifs;
+
+            const randomMessage =
+              messages[Math.floor(Math.random() * messages.length)];
+            const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+
+            popupText.textContent = randomMessage;
+            popupGif.src = randomGif;
+            popup.classList.remove("hidden");
+
+            // Confetti blast when YES is clicked
+            if (isYes) {
+              confettiBlast();
+            }
+          }
+
+          // Function to throw confetti
+          function confettiBlast() {
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            (function frame() {
+              const timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return;
+
+              confetti({
+                particleCount: 50,
+                spread: 70,
+                origin: {
+                  x: randomInRange(0.1, 0.9),
+                  y: Math.random() - 0.2,
+                },
+              });
+
+              requestAnimationFrame(frame);
+            })();
+          }
+
+          // Close popup handler
+          closeButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              popup.classList.add("hidden");
+            });
+          });
+
+          // Move the NO button randomly and show popup
+          noBtn.addEventListener("mouseover", () => {
+            const maxX = fullBody.clientWidth - noBtn.offsetWidth;
+            const maxY = fullBody.clientHeight - noBtn.offsetHeight;
+
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+
+            noBtn.style.position = "absolute";
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+
+            showPopup(false);
+          });
+
+          // YES button click event to show popup and confetti
+          yesBtn.addEventListener("click", () => {
+            showPopup(true);
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
